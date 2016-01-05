@@ -3,8 +3,15 @@ var Store = React.createClass({
     return { items: this.props.items }
   },
 
-  getDefaultState: function() {
-    return { items: [] };
+  componentDidMount: function() {
+    var self = this;
+    $.ajax({
+      url: '/items',
+      type: 'GET',
+      success: function(data) {
+        self.setState({ items: data });
+      }
+    });
   },
 
   showAddForm: function() {
