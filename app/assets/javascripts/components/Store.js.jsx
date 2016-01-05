@@ -11,6 +11,41 @@ var Store = React.createClass({
     this.setState({showAdd: !this.state.showAdd});
   },
 
+  addItemName: function(e) {
+    this.setState({ itemName: e.currentTarget.value });
+  },
+
+  addItemQuantity: function(e) {
+    this.setState({ itemQuantity: e.currentTarget.value });
+  },
+
+  addItemPrice: function(e) {
+    this.setState({ itemPrice: e.currentTarget.value });
+  },
+
+  addItemCategory: function(e) {
+    this.setState({ itemCategory: e.currentTarget.value });
+  },
+
+  submitItem: function(e) {
+    e.preventDefault();
+    var name = this.state.itemName;
+    var quantity = this.state.itemQuantity;
+    var price = this.state.itemPrice;
+    var category = this.state.itemCategory;
+    var self = this;
+    $.ajax({
+      url: '/items',
+      type: 'POST',
+      data: { item: { name: name, quantity: quantity, price: price, category: category }},
+      success: function(data) {
+        var items = self.state.items;
+        items.push(data);
+        self.setState({ items: items, showAdd: false, itemName: null, itemPrice: null, itemCategory: null, itemQuantity: null });
+      }
+    });
+  },
+
   addItemForm: function() {
     if(this.state.showAdd){
       return(<div>
@@ -29,7 +64,22 @@ var Store = React.createClass({
   },
 
   displayItems: function() {
-
+    var items = [];
+    var self = this;
+    self.state.items.forEach(function(item) {
+      items.push(<div className="col s3">
+                  <div className="card-medium green">
+                    <div className="card-content white-text center-align">
+                      <h5>{item.name}</h5>
+                      <br />
+                      <p>Quantity: {item.quantity}</p>
+                      <p>Price: ${item.price}</p>
+                      <p>Category: {item.category}</p>
+                    </div>
+                  </div>
+                </div>);
+    })
+    return items;
   },
 
   render: function() {
