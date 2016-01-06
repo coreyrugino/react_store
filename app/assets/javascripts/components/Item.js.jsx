@@ -19,7 +19,7 @@ var Item = React.createClass({
       type: "PUT",
       data: { item: { name: name, quantity: quantity, price: price, category: category}},
       success: function() {
-        self.props.refreshList();
+        self.props.refreshStore();
       },
     });
   },
@@ -32,6 +32,7 @@ var Item = React.createClass({
                   <input autoFocus={true} type='text' defaultValue={this.props.name} ref='itemName' />
                   <br />
                   <input type='numberfield' defaultValue={this.props.quantity} ref='itemQuantity' />
+                  <br />
                   <input type='numberfield' defaultValue={this.props.price} ref='itemPrice' />
                   <input type='text' defaultValue={this.props.category} ref='itemCategory' />
                   <a onClick={this.toggleEdit}>Cancel</a>
@@ -39,6 +40,30 @@ var Item = React.createClass({
               </div>
             </div>
           </div>);
+  },
+
+  deleteItem: function() {
+    var self = this;
+    $.ajax({
+      url: '/items/' + this.props.id,
+      type: 'DELETE',
+      success: function() {
+        self.props.refreshStore();
+      }
+    });
+  },
+
+  purchase: function() {
+    var self = this;
+    var newQuantity = this.props.quantity -= 1;
+    $.ajax({
+      url: "/items/" + this.props.id,
+      type: 'PUT',
+      data: {item: { quantity: newQuantity }},
+      success: function() {
+        self.props.refreshStore();
+      }
+    });
   },
 
   item: function() {
@@ -51,6 +76,11 @@ var Item = React.createClass({
                 <p>Quantity: {this.props.quantity}</p>
                 <p>Price: $ {this.props.price}</p>
                 <p>Category: {this.props.category}</p>
+              </div>
+              <div className="card-content white-text center-align">
+                <button onClick={this.deleteItem}>Delete</button>
+                <button onClick={this.toggleEdit}>Edit</button>
+                <button onClick={this.purchase}>Buy</button>
               </div>
             </div>
           </div>);
