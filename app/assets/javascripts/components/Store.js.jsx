@@ -1,6 +1,6 @@
 var Store = React.createClass({
   getInitialState: function() {
-    return { items: this.props.items }
+    return { items: [] };
   },
 
   componentDidMount: function() {
@@ -72,20 +72,11 @@ var Store = React.createClass({
 
   displayItems: function() {
     var items = [];
-    var self = this;
-    self.state.items.forEach(function(item) {
-      items.push(<div className="col s3">
-                  <div className="card-medium green">
-                    <div className="card-content white-text center-align">
-                      <h5>{item.name}</h5>
-                      <br />
-                      <p>Quantity: {item.quantity}</p>
-                      <p>Price: ${item.price}</p>
-                      <p>Category: {item.category}</p>
-                    </div>
-                  </div>
-                </div>);
-    })
+    for(var i = 0; i < this.state.items.length; i++) {
+      var item = this.state.items[i];
+      var key = "Item-" + item.id;
+      items.push(<Item key={key} id={item.id} name={item.name} quantity={item.quantity} price={item.price} category={item.category} />);
+    }
     return items;
   },
 
@@ -94,10 +85,8 @@ var Store = React.createClass({
             <a className='waves-effect waves-light btn' onClick={this.showAddForm}>Add Item</a>
             {this.addItemForm()}
             <h1 className='center-align'>WeeFee Corner Store</h1>
-            <div>
-              <div className='row'>
-                {this.displayItems()}
-              </div>
+            <div className='row'>
+              {this.displayItems()}
             </div>
            </div>);
   }
