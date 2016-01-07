@@ -26,15 +26,16 @@ var Item = React.createClass({
 
   edit: function() {
     return(<div className="col s3">
-            <div className="card-medium blue">
+            <div className="card-medium green">
               <div className="card-content white-text center-align">
                 <form onSubmit={this.updateItem}>
                   <input autoFocus={true} type='text' defaultValue={this.props.name} ref='itemName' />
                   <br />
-                  <input type='numberfield' defaultValue={this.props.quantity} ref='itemQuantity' />
+                  <input type='number' defaultValue={this.props.quantity} ref='itemQuantity' />
                   <br />
-                  <input type='numberfield' defaultValue={this.props.price} ref='itemPrice' />
+                  <input type='number' step="any" min="0" defaultValue={this.props.price} ref='itemPrice' />
                   <input type='text' defaultValue={this.props.category} ref='itemCategory' />
+                  <button type="submit">Submit</button>
                   <a onClick={this.toggleEdit}>Cancel</a>
                 </form>
               </div>
@@ -55,15 +56,19 @@ var Item = React.createClass({
 
   purchase: function() {
     var self = this;
-    var newQuantity = this.props.quantity -= 1;
-    $.ajax({
-      url: "/items/" + this.props.id,
-      type: 'PUT',
-      data: {item: { quantity: newQuantity }},
-      success: function() {
-        self.props.refreshStore();
-      }
-    });
+    if(this.props.quantity > 0) {
+      var newQuantity = this.props.quantity -= 1;
+      $.ajax({
+        url: "/items/" + this.props.id,
+        type: 'PUT',
+        data: {item: { quantity: newQuantity }},
+        success: function() {
+          self.props.refreshStore();
+        }
+      });
+    } else {
+      alert('We apologize. This item is sold out.');
+    }
   },
 
   item: function() {

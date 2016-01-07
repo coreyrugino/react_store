@@ -63,9 +63,9 @@ var Store = React.createClass({
               <form onSubmit={this.submitItem}>
                 <div className='input-field'>
                   <input autoFocus='true' placeholder='Add Item' type='text' onChange={this.addItemName} />
-                  <input placeholder='Quantity' type='numberfield' onChange={this.addItemQuantity} />
-                  <br /><br />
-                  <input placeholder='Price' type='numberfield' onChange={this.addItemPrice} />
+                  <input placeholder='Quantity' type='number' onChange={this.addItemQuantity} />
+                  <br />
+                  <input placeholder='Price' type='number' step="any" min="0" onChange={this.addItemPrice} />
                   <input placeholder='Category' type='text' onChange={this.addItemCategory} />
                   <button className='btn waves-effect' type='submit'>Save</button>
                 </div>

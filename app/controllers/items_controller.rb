@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
 
   def index
-    render json: Item.all
+    render json: Item.all.order(:created_at)
   end
 
   def create
