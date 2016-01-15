@@ -79,7 +79,7 @@ var Store = React.createClass({
     for(var i = 0; i < this.state.items.length; i++) {
       var item = this.state.items[i];
       var key = "Item-" + item.id;
-      items.push(<Item refreshStore={this.refreshStore} key={key} id={item.id} name={item.name} quantity={item.quantity} price={item.price} category={item.category} />);
+      items.push(<Item key={key} id={item.id} name={item.name} quantity={item.quantity} price={item.price} category={item.category} />);
     }
     return items;
   },
